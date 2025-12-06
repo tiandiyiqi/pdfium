@@ -35,6 +35,9 @@ config("pdfium_common_config") {
     defines += [ "OPJ_STATIC" ]
   }
 
+  # Use system ICU if available
+  defines += [ "USE_SYSTEM_ICUUC=1" ]
+
   if (pdf_enable_click_logging) {
     defines += [ "PDF_ENABLE_CLICK_LOGGING" ]
   }

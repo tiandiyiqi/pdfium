@@ -357,9 +357,10 @@ group("zlib") {
 }
 
 if (use_system_lcms2) {
-  pkg_config("lcms2_from_pkgconfig") {
+  config("lcms2_from_pkgconfig") {
     defines = [ "USE_SYSTEM_LCMS2" ]
-    packages = [ "lcms2" ]
+    include_dirs = [ "/usr/local/include", "/usr/local/opt/little-cms2/include" ]
+    libs = [ "lcms2" ]
   }
 }
 group("lcms2") {
@@ -371,9 +372,10 @@ group("lcms2") {
 }
 
 if (use_system_libopenjpeg2) {
-  pkg_config("libopenjpeg2_from_pkgconfig") {
+  config("libopenjpeg2_from_pkgconfig") {
     defines = [ "USE_SYSTEM_LIBOPENJPEG2" ]
-    packages = [ "libopenjp2" ]
+    include_dirs = [ "/usr/local/include", "/usr/local/Cellar/openjpeg/2.5.3/include/openjpeg-2.5" ]
+    libs = [ "openjp2" ]
   }
 }
 group("libopenjpeg2") {

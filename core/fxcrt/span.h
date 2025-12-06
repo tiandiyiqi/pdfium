@@ -48,6 +48,28 @@
 #include "core/fxcrt/check.h"
 #include "core/fxcrt/compiler_specific.h"
 #include "core/fxcrt/numerics/integral_constant_like.h"
+
+// Compatibility for std::lexicographical_compare_three_way if not available
+namespace pdfium {
+namespace internal {
+#if !defined(__cpp_lib_three_way_comparison) || __cpp_lib_three_way_comparison < 201907L
+template <class InputIt1, class InputIt2>
+constexpr auto lexicographical_compare_three_way(InputIt1 first1, InputIt1 last1,
+                                                  InputIt2 first2, InputIt2 last2) {
+  for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
+    if (*first1 < *first2) return std::strong_ordering::less;
+    if (*first2 < *first1) return std::strong_ordering::greater;
+  }
+  if (first1 == last1) {
+    return first2 == last2 ? std::strong_ordering::equal : std::strong_ordering::less;
+  }
+  return std::strong_ordering::greater;
+}
+#else
+using std::lexicographical_compare_three_way;
+#endif
+}  // namespace internal
+}  // namespace pdfium
 #include "core/fxcrt/numerics/safe_conversions.h"
 
 // A span is a view of contiguous elements that can be accessed like an array,
@@ -813,7 +835,7 @@ class GSL_POINTER span {
   {
     const auto const_lhs = span<const element_type>(lhs);
     const auto const_rhs = span<const element_type>(rhs);
-    return std::lexicographical_compare_three_way(
+    return pdfium::internal::lexicographical_compare_three_way(
         const_lhs.begin(), const_lhs.end(), const_rhs.begin(), const_rhs.end());
   }
   friend constexpr auto operator<=>(span lhs,
@@ -834,7 +856,7 @@ class GSL_POINTER span {
       span<OtherElementType, OtherExtent, OtherInternalPtrType> rhs) {
     const auto const_lhs = span<const element_type>(lhs);
     const auto const_rhs = span<const OtherElementType, OtherExtent>(rhs);
-    return std::lexicographical_compare_three_way(
+    return pdfium::internal::lexicographical_compare_three_way(
         const_lhs.begin(), const_lhs.end(), const_rhs.begin(), const_rhs.end());
   }
 
@@ -1268,7 +1290,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   {
     const auto const_lhs = span<const element_type>(lhs);
     const auto const_rhs = span<const element_type>(rhs);
-    return std::lexicographical_compare_three_way(
+    return pdfium::internal::lexicographical_compare_three_way(
         const_lhs.begin(), const_lhs.end(), const_rhs.begin(), const_rhs.end());
   }
   friend constexpr auto operator<=>(span lhs,
@@ -1288,7 +1310,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
       span<OtherElementType, OtherExtent, OtherInternalPtrType> rhs) {
     const auto const_lhs = span<const element_type>(lhs);
     const auto const_rhs = span<const OtherElementType, OtherExtent>(rhs);
-    return std::lexicographical_compare_three_way(
+    return pdfium::internal::lexicographical_compare_three_way(
         const_lhs.begin(), const_lhs.end(), const_rhs.begin(), const_rhs.end());
   }
 

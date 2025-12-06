@@ -274,6 +274,9 @@ void CloneResourcesDictEntries(CPDF_Document* doc,
   struct KeyAndObject {
     ByteString key;
     RetainPtr<const CPDF_Object> object;
+    
+    KeyAndObject(const ByteString& k, RetainPtr<const CPDF_Object> obj)
+        : key(k), object(std::move(obj)) {}
   };
   std::vector<KeyAndObject> entries_to_maybe_clone;
   {

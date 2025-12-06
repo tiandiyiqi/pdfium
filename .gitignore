@@ -68,3 +68,31 @@
 *.xcodeproj
 *~
 
+
+# Build outputs
+out/
+obj/
+*.a
+*.o
+*.dylib
+*.so
+*.dll
+
+# Build tools
+depot_tools/
+buildtools/
+
+# Generated files
+.gclient_previous_sync_commits
+.gcs_entries
+.cipd/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store

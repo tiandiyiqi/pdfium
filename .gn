@@ -42,7 +42,8 @@ default_args = {
   use_llvm_libatomic = false
 
   # PDFium bots only have 14.x. Override Chromium's 15.x requirement.
-  mac_sdk_min = "14"
+  # Lowered to 13 for CommandLineTools compatibility
+  mac_sdk_min = "13"
 }
 
 no_check_targets = [
