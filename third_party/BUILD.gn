@@ -375,6 +375,7 @@ if (use_system_libopenjpeg2) {
   config("libopenjpeg2_from_pkgconfig") {
     defines = [ "USE_SYSTEM_LIBOPENJPEG2" ]
     include_dirs = [ "/usr/local/include", "/usr/local/Cellar/openjpeg/2.5.3/include/openjpeg-2.5" ]
+    lib_dirs = [ "/usr/local/lib", "/usr/local/Cellar/openjpeg/2.5.3/lib" ]
     libs = [ "openjp2" ]
   }
 }
@@ -441,6 +442,7 @@ if (!pdf_enable_rust_png) {
   config("system_libpng_config") {
     libs = [ "png" ]
     defines = [ "USE_SYSTEM_LIBPNG" ]
+    include_dirs = [ "/usr/local/include", "/usr/local/opt/libpng/include/libpng16" ]
   }
 
   group("png") {

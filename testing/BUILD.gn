@@ -281,6 +281,16 @@ executable("pdfium_test") {
     ":pdfium_test_config",
     "../:pdfium_common_config",
   ]
+  
+  # Add ICU library for system ICU support
+  if (is_mac || is_linux) {
+    ldflags = [
+      "-L/usr/local/lib",
+      "-L/usr/local/Cellar/icu4c@76/76.1_1/lib",
+      "-licuuc",
+      "-licudata",
+    ]
+  }
 
   if (is_win) {
     sources += [

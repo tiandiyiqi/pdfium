@@ -19,6 +19,24 @@
 
 #if defined(USE_SYSTEM_ICUUC)
 #include <unicode/uchar.h>
+// ICU 76+ uses versioned symbols, create compatibility wrappers
+// Use function pointers to map to versioned symbols
+extern "C" {
+  UBool u_isalnum_76(UChar32 c);
+  UBool u_isalpha_76(UChar32 c);
+  UBool u_isspace_76(UChar32 c);
+  int32_t u_tolower_76(UChar32 c);
+  int32_t u_toupper_76(UChar32 c);
+  UBool u_islower_76(UChar32 c);
+  UBool u_isupper_76(UChar32 c);
+}
+#define u_isalnum u_isalnum_76
+#define u_isalpha u_isalpha_76
+#define u_isspace u_isspace_76
+#define u_tolower u_tolower_76
+#define u_toupper u_toupper_76
+#define u_islower u_islower_76
+#define u_isupper u_isupper_76
 #else
 #include "third_party/icu/source/common/unicode/uchar.h"
 #endif
